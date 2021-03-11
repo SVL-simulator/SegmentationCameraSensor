@@ -1,7 +1,7 @@
 {
   "name": "Segmentation Camera Sensor",
   "accessType": "public",
-  "description": "This sensor returns an image where objects are colored corresponding to their tag. Example of Instance Segmentation Tags. Be aware that this effects performance greatly.\n\t\"InstanceSegmentationTags\": [\n\t\t\"Car\",\n\t\t\"Pedestrian\",\n\t\t\"Obstacle\",\n\t\t\"Building\"\n\t]\nSee {{DOCS_HOST}}/docs/python-api/#segmentation-camera for more details.",
+  "description": "This sensor returns an image where objects are colored corresponding to their tag. Example of Instance Segmentation Tags. Be aware that this effects performance greatly.\n\t\"InstanceSegmentationTags\": [\n\t\t\"Car\",\n\t\t\"Pedestrian\",\n\t\t\"Obstacle\",\n\t\t\"Building\"\n\t]\nSee {{DOCS_HOST}}/docs/simulation-content/sensors-list/#segmentation-camera for more details.",
   "licenseName": "LG Content",
   "copyright": "LG Electronics Inc.",
   "tags": [
