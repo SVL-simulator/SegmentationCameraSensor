@@ -61,7 +61,7 @@ namespace Simulator.Sensors
                 {
                     // TODO: Change both semantic segmentation and instance segmentation from global to per camera.
                     // so that this error can be removed.
-                    Debug.LogError("Instance segmentation has been set for some tags. Please only load SegmentationCamera once!");
+                    Debug.LogWarning("Instance segmentation has been set for some tags. Please only load SegmentationCamera once!");
                 }
 
                 foreach (InstanceCandidateTags tag in InstanceSegmentationTags)
