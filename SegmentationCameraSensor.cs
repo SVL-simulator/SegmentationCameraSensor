@@ -45,7 +45,7 @@ namespace Simulator.Sensors
 
         private ShaderTagId passId;
 
-        public override void Start()
+        protected override void Initialize()
         {
             base.Start();
             // SegmentationCameraSensor always use JpegQuality = 100
