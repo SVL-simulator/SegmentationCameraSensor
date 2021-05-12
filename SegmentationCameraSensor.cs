@@ -11,7 +11,6 @@ using UnityEngine.Rendering.HighDefinition;
 using Simulator.Bridge.Data;
 using Simulator.Utilities;
 using System.Collections.Generic;
-using System;
 
 namespace Simulator.Sensors
 {
@@ -47,7 +46,7 @@ namespace Simulator.Sensors
 
         protected override void Initialize()
         {
-            base.Start();
+            base.Initialize();
             // SegmentationCameraSensor always use JpegQuality = 100
             JpegQuality = 100;
             SensorCamera.GetComponent<HDAdditionalCameraData>().customRender += CustomRender;
