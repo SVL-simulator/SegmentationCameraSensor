@@ -14,10 +14,18 @@ using System.Collections.Generic;
 
 namespace Simulator.Sensors
 {
+    using UnityEngine.Experimental.Rendering;
+
     [SensorType("Segmentation Camera", new[] {typeof(ImageData)})]
     [RequireComponent(typeof(Camera))]
     public class SegmentationCameraSensor : CameraSensorBase
     {
+        private static class Properties
+        {
+            public static readonly int Output = Shader.PropertyToID("_OutputXR");
+            public static readonly int TexSize = Shader.PropertyToID("_TexSize");
+        }
+        
         public enum InstanceCandidateTags
         {
             Car,
@@ -44,6 +52,8 @@ namespace Simulator.Sensors
 
         private ShaderTagId passId;
 
+        private ComputeShader computeUtils;
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -51,7 +61,7 @@ namespace Simulator.Sensors
             JpegQuality = 100;
             SensorCamera.GetComponent<HDAdditionalCameraData>().customRender += CustomRender;
             passId = new ShaderTagId("SimulatorSegmentationPass");
-            // passId = new ShaderTagId("GBuffer");
+            computeUtils = Instantiate(RuntimeSettings.Instance.ComputeUtils);
 
             if (InstanceSegmentationTags.Count > 0)
             {
@@ -75,6 +85,12 @@ namespace Simulator.Sensors
         {
             var cmd = CommandBufferPool.Get();
             SensorPassRenderer.Render(context, cmd, hd, renderTarget, passId, SimulatorManager.Instance.SkySegmentationColor);
+            var kernel = computeUtils.FindKernel("FillAlphaXR");
+            cmd.SetComputeTextureParam(computeUtils, kernel, Properties.Output, renderTarget.ColorHandle);
+            cmd.SetComputeVectorParam(computeUtils, Properties.TexSize, new Vector4(Width, Height, 1f / Width, 1f / Height));
+            cmd.DispatchCompute(computeUtils, kernel, HDRPUtilities.GetGroupSize(Width, 8), HDRPUtilities.GetGroupSize(Height, 8), 1);
+            context.ExecuteCommandBuffer(cmd);
+            cmd.Clear();
             CommandBufferPool.Release(cmd);
         }
     }
